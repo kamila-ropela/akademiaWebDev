@@ -1,0 +1,53 @@
+﻿@model IEnumerable<akademia_web_dev.Models.HyperLinkModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @using (Html.BeginForm("Create", "HyperLink", FormMethod.Post))
+        {
+            <input type="text" name="link" placeholder="Enter your url here" />
+            <input type="submit" value="OK!" />
+        }
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Link)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        <a href="http://@item.Link">@item.Link</a>
+                        <a href="/link/@item.Hash">@item.Hash</a>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
