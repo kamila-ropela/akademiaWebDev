@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using akademia_web_dev.DB;
+using akademia_web_dev.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace akademia_web_dev
 {
@@ -22,6 +26,10 @@ namespace akademia_web_dev
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "Links", Version = "v1" }));
+            services.AddDbContext<LinkDBContext>(options => options.UseSqlite(Configuration.GetConnectionString("LinksDBConnection")));
+            services.AddTransient<ILinkRepository, LinkRepository>();
+          //  services.AddSingleton<IHashService, HashService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +46,9 @@ namespace akademia_web_dev
             }
 
             app.UseStaticFiles();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Links"));
 
             app.UseMvc(routes =>
             {
