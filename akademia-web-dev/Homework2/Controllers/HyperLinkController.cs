@@ -18,11 +18,11 @@ namespace akademia_web_dev.Controllers
 
         internal ILinkRepository Repository => _repository;
 
-        //[HttpGet]
+        [HttpGet]
         public IActionResult Index()
         {
-          //  var links = _re.pository.Get(string.Empty, 0);
-            return View(_repository);
+            var links = _repository.Get(string.Empty, 0);
+            return View(links);
         }
 
         [HttpPost]

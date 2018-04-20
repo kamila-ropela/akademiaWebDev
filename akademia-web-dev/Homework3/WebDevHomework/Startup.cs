@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using akademia_web_dev.DB;
-using akademia_web_dev.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using WebDevHomework.Interfaces;
+using WebDevHomework.Repository;
+using WebDevHomework.Services;
 
-namespace akademia_web_dev
+namespace WebDevHomework
 {
     public class Startup
     {
@@ -25,11 +26,17 @@ namespace akademia_web_dev
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "Links", Version = "v1" }));
-            services.AddDbContext<LinkDBContext>(options => options.UseSqlite(Configuration.GetConnectionString("LinksDBConnection")));
-            services.AddTransient<ILinkRepository, LinkRepository>();
-          //  services.AddSingleton<IHashService, HashService>();
+            services.AddMvc();            
+            services.AddDbContext<LinkDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("LinkConnection")));
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info{ Title = "Link API", Version = "v1" }));
+            
+            
+            services.AddScoped<LinkRepository>();
+            services.AddSingleton<Hasher>();
+            services.AddTransient<ILinkReader, LinkReader>();
+            services.AddTransient<ILinkWriter, LinkWriter>();
+            services.AddTransient<IHashDecoder, Decoder>();
+            services.AddTransient<IHashEncoder, Encoder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,24 +44,18 @@ namespace akademia_web_dev
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Warsaw Stops API"));
 
             app.UseStaticFiles();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Links"));
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=HyperLink}/{action=Index}/{id?}");
+                    template: "{controller=Link}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,0 +1,52 @@
+.searchbar {
+  border: solid 1px #ff7626;
+  display: inline-block;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  background-clip: padding-box;
+  /* stops bg color from leaking outside the border: */ }
+  .searchbar * {
+    display: inline-block;
+    vertical-align: middle; }
+  .searchbar input {
+    outline: none;
+    border: none;
+    padding: 4px 3px;
+    margin-left: 4px;
+    min-width: 200px; }
+  .searchbarIcons-icon {
+    padding: 3px;
+    cursor: pointer;
+    border-left: solid 1px #ff7626; }
+
+.tablePagination-wrapper {
+  justify-content: center;
+  align-items: center; }
+
+.tablePagination-next {
+  text-align: right; }
+
+.tablePagination-desc {
+  text-align: center; }
+  .tablePagination-desc p {
+    line-height: 38px; }
+
+.stopsTable {
+  justify-content: center; }
+  .stopsTable table {
+    border-collapse: collapse; }
+  .stopsTable table, .stopsTable th, .stopsTable td {
+    border: 1px solid #dddddd; }
+  .stopsTable thead {
+    background-color: #504C4D; }
+    .stopsTable thead th {
+      color: white; }
+  .stopsTable tbody tr {
+    height: auto; }
+    .stopsTable tbody tr:nth-child(2n) {
+      background-color: #ffffff; }
+    .stopsTable tbody tr:nth-child(2n + 1) {
+      background-color: #f9f9f9; }
+  .stopsTable tbody td {
+    padding: 8px; }

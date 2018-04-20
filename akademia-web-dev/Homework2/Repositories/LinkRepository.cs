@@ -45,12 +45,21 @@ namespace akademia_web_dev.Repositories
             .Contains(search)) : _context.link;
             var linksCount = linksFilteredByLinks.Count();
 
+            var count = linksFilteredByLinks.Count();
+
             var paginatedLink = linksFilteredByLinks
+                .OrderBy(x => x.Id)
+                .Skip((skip - 1) * 10)
+                .Take(10);
+
+            return (paginatedLink, count % 10 == 0 ? count / 10 : count / 10 + 1);
+
+            /*var paginatedLink = linksFilteredByLinks
             .OrderBy(x => x.Id)
             .Skip(skip)
             .Take(10);
 
-            return (paginatedLink, linksCount);
+            return (paginatedLink, linksCount);*/
         }
 
         public HyperLinkModel Get(int id)
